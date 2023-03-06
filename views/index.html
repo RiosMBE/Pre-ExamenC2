@@ -1,0 +1,79 @@
+<%-include('partials/encabezado.html');%>
+<body>
+    <div class="container">
+        <center>
+            <form name="index" method="post">
+
+                <label for="">Número de boleto</label>
+                <input type="number" name="numBoleto" id="numBoleto" required="true">
+                <br>
+                <label for="">Destino</label>
+                <input type="text" name="destino" id="destino" required="true">
+                <br>
+                <label for="">Nombre del cliente</label>
+                <input type="text" name="cliente" id="cliente" required="true">
+                <br>
+                <label for="">Años cumplidos</label>
+                <input type="number" name="edad" id="edad" required="true">
+                <br>
+                <label for="">Tipo de viaje</label>
+                <select name="tipoViaje" id="tipoViaje">
+                    <option value="1">Sencillo</option>
+                    <option value="2">Doble</option>
+                </select>
+                <br>
+                <label for="">Precio</label>
+                <input type="number" name="precio" id="precio" required="true">
+                <br>
+                <hr>
+
+                <button type="submit">Calcular</button>
+                <button type="submit" id="limpiarCampos" onclick="limpiarCampos()">Limpiar</button>
+            </form>
+
+            <%
+                let impuesto = 0;
+                let descuento = 0;
+                let total = 0;
+                let subtotal = 0;
+                let preciof = 0;
+
+                if(precio!=null){
+                    if(tipoViaje==2){
+                        subtotal = parseInt(precio) * 1.80;
+                        impuesto = parseInt(subtotal) * .16;
+                        preciof = subtotal + impuesto;
+                    }else{
+                        subtotal = parseInt(precio);
+                        impuesto = parseInt(subtotal) * .16;
+                        preciof = subtotal + impuesto;
+                    }
+
+                    if(edad>=60){
+                        descuento = preciof * .5;
+                    }else{
+                        descuento = 0;
+                    }
+                    
+                    total = subtotal + impuesto - descuento;
+                }
+            %>
+
+            
+            <hr>
+            <label for="subtotal">Subtotal:</label>
+            <input type="number" id="subtotal" name="subtotal" value="<%= subtotal%>" readonly>
+            <br>
+            <label for="impuesto">Impuesto (16%):</label>
+            <input type="number" id="impuesto" name="impuesto" value="<%= impuesto%>" readonly>
+            <br>
+            <label for="descuento">Descuento</label>
+            <input type="number" id="descuento" name="descuento" value="<%= descuento%>" readonly>
+            <br>
+            <label for="preciof">Total a pagar</label>
+            <input type="number" id="preciof" name="preciof" value="<%= preciof%>" readonly>
+        </center>
+    </div>
+</body>
+<%-include('partials/piePagina.html');%>
+</html>
